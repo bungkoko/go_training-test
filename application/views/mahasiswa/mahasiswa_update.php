@@ -7,12 +7,12 @@
 		<tr>
 			<td>NIM</td>
 			<td>:</td>
-			<td><input type="text" name="mahasiswa_nim"></td>
+			<td><input type="text" name="mahasiswa_nim" value="<?php echo $readmhs->mahasiswa_nim; ?>"></td>
 		</tr>
 		<tr>
 			<td>Nama</td>
 			<td>:</td>
-			<td><input type="text" name="mahasiswa_nm"></td>
+			<td><input type="text" name="mahasiswa_nm" value="<?php echo $readmhs->mahasiswa_nm; ?>"></td>
 		</tr>
 		<tr>
 			<td>Jenis Kelamin</td>
@@ -52,38 +52,11 @@
 		<tr>
 			<td>Alamat</td>
 			<td>:</td>
-			<td><textarea name="mahasiswa_alamat" cols='60'></textarea></td>
+			<td><textarea name="mahasiswa_alamat" cols='60'><?php echo $readmhs->mahasiswa_alamat; ?></textarea></td>
 		</tr>
 		<tr>
 			<td colspan='3'><input type="submit" name='submit' value="Simpan"></td>
 		</tr>
 
 	</form>
-</table>
-
-
-<table border='1'>
-	<tr>
-		<td>NIM</td>
-		<td>NAMA</td>
-		<td>JENIS KELAMIN</td>
-		<td>AGAMA</td>
-		<td>Dosen Pembimbing</td>
-		<td>Aksi</td>
-	</tr>
-	<?php foreach ($get_mahasiswa->result() as $mhs): ?>
-	<tr>
-		<td><?php echo $mhs->mahasiswa_nim; ?></td>
-		<td><?php echo $mhs->mahasiswa_nm; ?></td>
-		<td><?php echo $mhs->mahasiswa_jeniskelamin; ?></td>
-		<td><?php echo $mhs->mahasiswa_agama; ?></td>
-		<td><?php echo $mhs->dosen_nm; ?></td>
-		<td>
-			<a href="<?php echo site_url('Go_training/update_mahasiswa').'/'.$mhs->mahasiswa_nim; ?>">Ubah</a>
-			<a href="<?php echo site_url('Go_training/delete_mahasiswa').'/'.$mhs->mahasiswa_nim; ?>">Hapus</a>
-		</td>
-
-	</tr>
-	<?php endforeach;?>
-
 </table>

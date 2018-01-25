@@ -12,8 +12,8 @@ class Go_training extends CI_Controller
 
     public function index()
     {
-        $this->loop();
-
+        //$this->loop();
+        $this->mahasiswa();
     }
 
     //menampilkan looping 1-100 :
@@ -40,22 +40,70 @@ class Go_training extends CI_Controller
     }
 
     //insert mahasiswa
-    function mahasiswa(){
+    public function mahasiswa()
+    {
+        $data['warning']       = '';
+        $data['title']         = 'mahasiswa';
+        $data['content']       = 'mahasiswa/mahasiswa_input';
+        $data['get_dosen']     = $this->Gotraining_model->get_dosen();
+        $data['get_mahasiswa'] = $this->Gotraining_model->get_mahasiswa();
+
+        if ($this->input->post('submit')):
+            $this->form_validation->set_rules('mahasiswa_nim', 'NIM', 'required');
+            $this->form_validation->set_rules('mahasiswa_nm', 'nama', 'required');
+            $this->form_validation->set_rules('mahasiswa_jeniskelamin', 'jenis kelamin', 'required');
+            $this->form_validation->set_rules('mahasiswa_agama', 'agama', 'required');
+            $this->form_validation->set_rules('mahasiswa_alamat', 'alamat', 'required');
+
+            if ($this->form_validation->run() == true):
+                $this->Gotraining_model->add_mahasiswa();
+                $this->session->set_flashdata('message', 'berhasil menambahkan data mahasiswa');
+                redirect('Go_training');
+            else:
+                $data['warning'] = validation_errors();
+            endif;
+        endif;
+
+        $this->load->view('index', $data);
+    }
+
+    public function delete_mahasiswa($mahasiswa_nim)
+    {
+        $this->Gotraining_model->delete_mahasiswa($mahasiswa_nim);
+        $this->session->set_flashdata('message', 'berhasil menghapus data mahasiswa');
+        redirect('Go_training');
+    }
+
+    function update_mahasiswa($mahasiswa_nim)
+    {
     	$data['warning']='';
-    	$data['content']='mahasiswa/mahasiswa_input';
+    	$data['title']='Update Mahasiswa';
+    	$data['content']='mahasiswa/mahasiswa_update';
+    	$data['readmhs']=$this->Gotraining_model->read_mahasiswa($mahasiswa_nim);
+    	$data['get_dosen']     = $this->Gotraining_model->get_dosen();
+        
+       
+        
+        if ($this->input->post('submit')):
+            $this->form_validation->set_rules('mahasiswa_nim', 'NIM', 'required');
+            $this->form_validation->set_rules('mahasiswa_nm', 'nama', 'required');
+            $this->form_validation->set_rules('mahasiswa_jeniskelamin', 'jenis kelamin', 'required');
+            $this->form_validation->set_rules('mahasiswa_agama', 'agama', 'required');
+            $this->form_validation->set_rules('mahasiswa_alamat', 'alamat', 'required');
 
-    	if($this->input->post('submit')):
-    		$this->form_validation->set_rules('mahasiswa_nim','NIM','required');
-    		$this->form_validation->set_rules('mahasiswa_nm','nama','required');
-    		$this->form_validation->set_rules('mahasiswa_jeniskelamin','jenis kelamin','required');
-    		$this->form_validation->set_rules('mahasiswa_agama','agama','required');
-    		$this->form_validation->set_rules('mahasiswa_alamat','alamat','required');
+            if ($this->form_validation->run() == true):
+                $this->Gotraining_model->update_mahasiswa($mahasiswa_nim);
+                $this->session->set_flashdata('message', 'berhasil mengubah data mahasiswa');
+                redirect('Go_training');
+            else:
+                $data['warning'] = validation_errors();
+            endif;
+        endif;
+       
 
-    		if($this->form_validation->run()==TRUE):
-    			$this->Gotraining_model->add_mahasiswa();
-    			redirect('Go_training/mahasiswa');
-    		endif;
-    	endif;
+        $this->load->view('index', $data);
+
+
     }
 
 }
