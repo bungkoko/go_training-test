@@ -46,9 +46,27 @@ class Gotraining_model extends CI_Model
 
     public function update_mahasiswa($mahasiswa_nim)
     {
-    	$this->setMahasiswa();
-    	$this->db->where('mahasiswa_nim',$mahasiswa_nim);
-    	return $this->db->update('mahasiswa');
+        $this->setMahasiswa();
+        $this->db->where('mahasiswa_nim', $mahasiswa_nim);
+        return $this->db->update('mahasiswa');
     }
+
+    public function get_mhs_has_matakuliah()
+    {	
+    	return $this->db->query('select 
+					mahasiswa.mahasiswa_nim, mahasiswa.mahasiswa_nm,matakuliah.matakuliah_nm,
+					matakuliah.matakuliah_sks, dosen.dosen_nm 
+				from 
+					mahasiswa, matakuliah, dosen, mahasiswa_has_matakuliah
+				where 
+					mahasiswa.mahasiswa_nim=mahasiswa_has_matakuliah.mahasiswa_mahasiswa_nim 
+				and
+					matakuliah.matakuliah_id=mahasiswa_has_matakuliah.matakuliah_matakuliah_id
+				and
+					dosen.matakuliah_matakuliah_id=matakuliah.matakuliah_id'
+				);
+    	
+    }
+
 
 }

@@ -74,16 +74,14 @@ class Go_training extends CI_Controller
         redirect('Go_training');
     }
 
-    function update_mahasiswa($mahasiswa_nim)
+    public function update_mahasiswa($mahasiswa_nim)
     {
-    	$data['warning']='';
-    	$data['title']='Update Mahasiswa';
-    	$data['content']='mahasiswa/mahasiswa_update';
-    	$data['readmhs']=$this->Gotraining_model->read_mahasiswa($mahasiswa_nim);
-    	$data['get_dosen']     = $this->Gotraining_model->get_dosen();
-        
-       
-        
+        $data['warning']   = '';
+        $data['title']     = 'Update Mahasiswa';
+        $data['content']   = 'mahasiswa/mahasiswa_update';
+        $data['readmhs']   = $this->Gotraining_model->read_mahasiswa($mahasiswa_nim);
+        $data['get_dosen'] = $this->Gotraining_model->get_dosen();
+
         if ($this->input->post('submit')):
             $this->form_validation->set_rules('mahasiswa_nim', 'NIM', 'required');
             $this->form_validation->set_rules('mahasiswa_nm', 'nama', 'required');
@@ -99,11 +97,17 @@ class Go_training extends CI_Controller
                 $data['warning'] = validation_errors();
             endif;
         endif;
-       
 
         $this->load->view('index', $data);
 
-
     }
 
+
+    function mahasiswa_has_matakuliah(){
+    	$data['warning']='';
+    	$data['gtmhs_has_matkul']=$this->Gotraining_model->get_mhs_has_matakuliah();
+    	$data['content']='mahasiswa/mahasiswa_has_matakuliah';
+
+    	$this->load->view('index',$data);
+    }
 }
